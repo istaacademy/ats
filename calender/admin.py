@@ -4,14 +4,33 @@ from calender.models import Event, Time
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title',
-                    'description',
                     'is_done',
-                    "result",
                     "interviewer",
-                    "interviewee"
+                    "interviewee",
+                    "link_meeting",
+                    'description',
                     )
     search_fields = ('title',)
-    list_filter = ("is_done", "interviewer", "interviewee", "result")
+    list_editable = ('is_done',)
+    list_filter = ("is_done", "interviewee",)
+
+    def get_list_display(self, request):
+        # Customize the list_display based on conditions
+        if request.user.is_superuser:
+            return ('title',
+                    'interviewer',
+                    'interviewee',
+                    'link_meeting',
+                    'is_done',
+                    'description'
+                    )
+        else:
+            return ('interviewer',
+                    'interviewee',
+                    'link_meeting',
+                    'is_done',
+                    'description'
+                    )
 
 
 admin.site.register(Event, EventAdmin)
