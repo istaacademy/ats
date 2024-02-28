@@ -15,6 +15,7 @@ class Status(models.Model):
 
 class State(models.Model):
     name = models.CharField(max_length=200)
+    title = models.CharField(max_length=300, blank=True, null=True)
     color = models.CharField(blank=True, null=True, max_length=200)
 
     class Meta:

@@ -24,6 +24,29 @@ class VolunteerAdmin(admin.ModelAdmin):
     show_firm_url.allow_tags = True
     show_firm_url.short_description = 'Linkedin'
 
+    def get_list_display(self, request):
+        # Customize the list_display based on conditions
+        if request.user.is_superuser:
+            return ('first_name',
+                    'last_name',
+                    'email',
+                    "phone_number",
+                    "status",
+                    "state",
+                    "show_firm_url")
+        else:
+            return ('first_name',
+                    'last_name',
+                    "status",
+                    "state",
+                    "show_firm_url")
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        group = request.user.groups.all().values_list('name', flat=True)
+        qs = qs.filter(state__name__in=group)
+        return qs
+
 
 #
 
