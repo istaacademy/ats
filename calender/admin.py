@@ -1,18 +1,22 @@
 from django.contrib import admin
-from calender.models import Event, Time
+from calender.models import (
+    Event,
+    Time,
+)
+from django.utils.html import format_html
 
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title',
-                    'is_done',
+                    'status',
                     "interviewer",
                     "interviewee",
                     "link_meeting",
                     'description',
                     )
     search_fields = ('title',)
-    list_editable = ('is_done',)
-    list_filter = ("is_done", "interviewee",)
+    list_editable = ('status',)
+    list_filter = ("status", "interviewee",)
 
     def get_list_display(self, request):
         # Customize the list_display based on conditions
@@ -20,17 +24,23 @@ class EventAdmin(admin.ModelAdmin):
             return ('title',
                     'interviewer',
                     'interviewee',
-                    'link_meeting',
-                    'is_done',
-                    'description'
+                    'status',
+                    'description',
+                    "show_firm_url",
                     )
         else:
             return ('interviewer',
                     'interviewee',
-                    'link_meeting',
-                    'is_done',
-                    'description'
+                    'show_firm_url',
+                    'status',
+                    'description',
                     )
+
+    def show_firm_url(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.link_meeting)
+
+    show_firm_url.allow_tags = True
+    show_firm_url.short_description = 'link meeting'
 
 
 admin.site.register(Event, EventAdmin)

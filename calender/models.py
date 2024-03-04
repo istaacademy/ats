@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from volunteer.models import Volunteer
+from volunteer.models import Volunteer, Status
 
 
 class Time(models.Model):
@@ -20,7 +20,8 @@ class Time(models.Model):
 class Event(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True, max_length=300)
-    is_done = models.BooleanField(default=False)
+    status = models.ForeignKey(Status, on_delete=models.DO_NOTHING,  limit_choices_to={'model': "Event",
+                                                                                       "is_active": True})
     time = models.ForeignKey(Time, on_delete=models.CASCADE, related_name="events")
     interviewer = models.ForeignKey(User, on_delete=models.PROTECT, related_name="interviewer")
     interviewee = models.ForeignKey(Volunteer, on_delete=models.PROTECT, related_name="interviewee")
