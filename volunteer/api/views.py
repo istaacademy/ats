@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 from rest_framework import status
 from rest_framework import viewsets
 from .serializers import VolunteerSerializer
@@ -17,8 +19,11 @@ class VolunteerCreate(viewsets.ViewSet):
             status_obj = Status.objects.get_or_create(name="Pending")
             serializer.validated_data["state"] = state[0]
             serializer.validated_data["status"] = status_obj[0]
-            Volunteer.objects.create(**serializer.validated_data)
-            return Result.data(data=serializer.data, status=status.HTTP_201_CREATED,
-                               message="created successfully")
+            try:
+                Volunteer.objects.create(**serializer.validated_data)
+                return Result.data(data=serializer.data, status=status.HTTP_201_CREATED,
+                                   message="created successfully")
+            except IntegrityError as ex:
+                raise ValueError("already exists")
         else:
             return Result.error(message=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

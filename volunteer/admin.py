@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Volunteer, State, Status
 from django.utils.html import format_html
+from calender.models import Event
+from django.db.models import Q
 
 
 class VolunteerAdmin(admin.ModelAdmin):
@@ -43,8 +45,11 @@ class VolunteerAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
         group = request.user.groups.all().values_list('name', flat=True)
-        qs = qs.filter(state__name__in=group)
+        event = Event.objects.filter(interviewer=request.user.id).values_list("interviewee", flat=True)
+        qs = qs.filter(Q(state__name__in=group) & Q(id=event[0]))
         return qs
 
 
