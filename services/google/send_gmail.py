@@ -1,13 +1,13 @@
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
-from auth import authentication
+from services.google.auth import authentication
 from email import encoders
 import os.path
 import base64
 
 cwd = os.getcwd()
-file_path = f'{cwd}/test.pdf'
+file_path = f'{cwd}/services/google/test.pdf'
 
 
 def create_message(sender, to, subject, body):
@@ -42,23 +42,21 @@ def send_message(service, user_id, message):
         message = (service.users().messages().send(userId=user_id, body=message)
                    .execute())
         print('Message Id: %s' % message['id'])
-        return message
+        return True
     except Exception as error:
         print(f'An error occurred: {error}')
 
 
-# Authenticate to the Gmail API
-service = authentication(service_name="gmail")
+def send_email(name: str, family: str, receiver_email: str):
+    # Authenticate to the Gmail API
+    service = authentication(service_name="gmail")
 
-message = ("اسماعیل جان"
-           "")
+    email_body_html = (
+        f'<p>سلام {name} {family},</p><p>This is a personalized test email sent from Python via Gmail API with HTML '
+        f'content.</p>')
 
-# Send an email
-name = "اسماعیل"
-email_body_html = (f'<p>سلام  {name},</p><p>This is a personalized test email sent from Python via Gmail API with HTML '
-                   f'content.</p>')
+    test_message = create_message('istaacademyinfo@gmail.com',
+                                  receiver_email, 'Task',
+                                  email_body_html)
 
-test_message = create_message('istaacademyinfo@gmail.com',
-                              'smk182018@gmail.com', 'Task',
-                              email_body_html)
-send_message(service, 'me', test_message)
+    return send_message(service, 'me', test_message)

@@ -15,8 +15,8 @@ def authentication(service_name: str = "calender"):
     # created automatically when the authorization flow completes for the first
     # time.
     cwd = os.getcwd()
-    token_calender_path = f'{cwd}/token_calender.json'
-    token_gmail_path = f'{cwd}/token_gmail.json'
+    token_calender_path = f'{cwd}/services/google/token_calender.json'
+    token_gmail_path = f'{cwd}/services/google/token_gmail.json'
     if os.path.exists(token_calender_path if service_name == "calender" else token_gmail_path):
         creds = Credentials.from_authorized_user_file(token_calender_path if service_name == "calender"
                                                       else token_gmail_path,
@@ -27,14 +27,12 @@ def authentication(service_name: str = "calender"):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                f'{cwd}/credentials.json',
+                f'{cwd}/services/google/credentials.json',
                 SCOPES_C if service_name == "calender" else SCOPES_G)
-
             creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open(token_calender_path  if service_name == "calender" else token_gmail_path, 'w') as token:
-            token.write(creds.to_json())
-
+            # Save the credentials for the next run
+            with open(token_calender_path if service_name == "calender" else token_gmail_path, 'w') as token:
+                token.write(creds.to_json())
     # Assuming you have the creds from the authorization step
     if service_name == "calender":
         service = build('calendar', 'v3', credentials=creds)

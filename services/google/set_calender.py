@@ -1,5 +1,5 @@
 from datetime import datetime
-from auth import authentication
+from services.google.auth import authentication
 
 
 def set_meeting(start: datetime, end: datetime, volunteer_email: str, interviewer_email: str, date):
