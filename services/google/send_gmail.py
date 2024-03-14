@@ -50,11 +50,41 @@ def send_message(service, user_id, message):
 def send_email(name: str, family: str, receiver_email: str):
     # Authenticate to the Gmail API
     service = authentication(service_name="gmail")
+    # HTML template with variables
 
-    email_body_html = (
-        f'<p>سلام {name} {family},</p><p>This is a personalized test email sent from Python via Gmail API with HTML '
-        f'content.</p>')
+    recipient_name = f" {family}{name} "
 
+    email_body_html = f"""
+    <!DOCTYPE html>
+    <html>
+       <head>
+          <style>
+             body {{
+             font-family: Sans-serif;
+             font-size: 20px;
+             text-align: right;
+             direction: rtl;
+             }}
+             .id{{
+             text-align: left;
+             direction: ltr;
+             }}
+          </style>
+       </head>
+       <body>
+          <h4>{recipient_name}</h4>
+          <p>سلام</p>
+          <p>  امیدوارم خوب باشی</p>
+          <p>         به پیوست این ایمیل تسک مرحله اول مصاحبه رو براتون فرستادیم.</p>
+            <p>
+             راه‌های ارتباطی توی تسک عنوان شدن. اگر سوالی داشتید یا نکته و ابهامی وجود داشت، می‌تونید از طریق همین راه‌ها با ما در ارتباط باشید. برای انجام این تسک ۴۸ ساعت از زمان دریافت این ایمیل فرصت دارید.
+          </p>
+          <div class="id">
+             @ista_support
+          </div>
+       </body>
+    </html>
+    """
     test_message = create_message('istaacademyinfo@gmail.com',
                                   receiver_email, 'Task',
                                   email_body_html)
