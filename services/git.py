@@ -1,6 +1,7 @@
 import subprocess
 import os
 import shutil
+from decouple import config
 
 
 # Function to execute shell commands
@@ -45,7 +46,7 @@ def clone_and_push_repo(original_repo_url, new_repo_url):
     run_command(['git', 'add', '.'])
 
     # Commit the changes
-    run_command(['git', 'commit', '-m', message_commit ])
+    run_command(['git', 'commit', '-m', message_commit])
     # Add the new repository URL as a remote
     run_command(['git', 'remote', 'set-url', 'origin', new_repo_url])
 
@@ -55,9 +56,8 @@ def clone_and_push_repo(original_repo_url, new_repo_url):
     print("Files have been moved and pushed to the new repository.")
 
 
-if __name__ == "__main__":
-    original_repo_url = "https://github.com/eskazemi/social.git"
-    username = "istaacademy"
-    password_or_token = "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"
-    new_repo_url = f"https://{username}:{password_or_token}@github.com/istaacademy/bootcamp-front.git"
-    clone_and_push_repo(original_repo_url, new_repo_url)
+original_repo_url = "https://github.com/eskazemi/Ecommerce-v1.git"
+username = config("USERNAME_GIT")
+password_or_token = config("PASSWORD_GIT")
+new_repo_url = f"https://{username}:{password_or_token}@github.com/istaacademy/bootcamp-front.git"
+clone_and_push_repo(original_repo_url, new_repo_url)
