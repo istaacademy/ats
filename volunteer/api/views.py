@@ -1,29 +1,58 @@
-from sqlite3 import IntegrityError
-
 from rest_framework import status
-from rest_framework import viewsets
-from .serializers import VolunteerSerializer
-from volunteer.models import Volunteer, Status, State
+from rest_framework.views import APIView
+from .serializers import (
+    VolunteerCreateSerializer,
+    VolunteerUpdateSerializer,
+)
+from volunteer.models import (
+    Volunteer,
+    Status,
+    State,
+)
 from utils.response_model import Result
 from drf_spectacular.utils import extend_schema
+from services.google.send_gmail import send_email
 
 
-class VolunteerCreate(viewsets.ViewSet):
-    queryset = Volunteer.objects.all()
-
-    @extend_schema(request=VolunteerSerializer)
-    def create(self, request, *args, **kwargs):
-        serializer = VolunteerSerializer(data=request.data)
+class VolunteerApiview(APIView):
+    @extend_schema(request=VolunteerCreateSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = VolunteerCreateSerializer(data=request.data)
         if serializer.is_valid():
-            state = State.objects.get_or_create(name="TEC")
-            status_obj = Status.objects.get_or_create(name="Pending")
-            serializer.validated_data["state"] = state[0]
-            serializer.validated_data["status"] = status_obj[0]
+            state = State.objects.get(name="TEC")
+            status_obj = Status.objects.get(state_id=state.id, key="Pending", order=1)
+            serializer.validated_data["state"] = state
+            serializer.validated_data["status"] = status_obj
             try:
-                Volunteer.objects.create(**serializer.validated_data)
-                return Result.data(data=serializer.data, status=status.HTTP_201_CREATED,
+                print(serializer.validated_data)
+                obj = Volunteer.objects.create(**serializer.validated_data)
+
+                is_send = send_email(serializer.validated_data["first_name"],
+                                     serializer.validated_data["last_name"],
+                                     serializer.validated_data["email"], )
+                obj.is_send_email = is_send
+                obj.save()
+                return Result.data(data={}, status=status.HTTP_201_CREATED,
                                    message="created successfully")
-            except IntegrityError as ex:
-                raise ValueError("already exists")
+            except Exception as ex:
+                if 'UNIQUE constraint failed: volunteer_volunteer.email' in str(ex):
+                    # Inform the user that the email is already taken
+                    return Result.error(message=
+                                        "Error: This email address is already in use. Please choose a different email.")
+
+        else:
+            return Result.error(message=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(request=VolunteerUpdateSerializer)
+    def put(self, request, *args, **kwargs):
+        serializer = VolunteerUpdateSerializer(data=request.data)
+        if serializer.is_valid():
+            volunteer = Volunteer.objects.filter(email=serializer.validated_data["email"])
+            if volunteer.exists():
+                volunteer.update(url_github=serializer.validated_data["url_github"])
+                volunteer.first().save()
+                return Result.data(data={}, status=status.HTTP_200_OK, message="update successfully")
+            else:
+                return Result.error(message="چنین داوطلبی وجود ندارد", status=status.HTTP_404_NOT_FOUND)
         else:
             return Result.error(message=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

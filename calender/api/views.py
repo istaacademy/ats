@@ -1,10 +1,9 @@
 import random
-from rest_framework import viewsets
 from .serializers import (
     EventSerializer,
     TimeSerializer
 )
-from volunteer.models import Volunteer
+from volunteer.models import Volunteer, Status
 from django.contrib.auth.models import (
     Group,
     User
@@ -15,15 +14,14 @@ from calender.models import (
     Event,
     Time,
 )
+from rest_framework.views import APIView
 from services.google.set_calender import set_meeting
-from django.core.mail import send_mail
 
 
-class EventViewSet(viewsets.ViewSet):
-    queryset = Time.objects.all()
+class EventApiView(APIView):
 
-    @extend_schema()
-    def create(self, request, *args, **kwargs):
+    @extend_schema(request=EventSerializer)
+    def post(self, request, *args, **kwargs):
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -46,7 +44,7 @@ class EventViewSet(viewsets.ViewSet):
                                                volunteer_email=volunteer.email,
                                                interviewer_email=interviewer_new.email)
 
-                    Event.objects.create(title=f"{volunteer.first_name} is interviewed",
+                    Event.objects.create(title=f"مصاحبه با{volunteer.first_name} ",
                                          interviewer=interviewer_new,
                                          interviewee=volunteer,
                                          time=time_obj,
@@ -58,8 +56,8 @@ class EventViewSet(viewsets.ViewSet):
                                                date=time_obj.day,
                                                volunteer_email=volunteer.email,
                                                interviewer_email=interviewers[0].email)
-                    Event.objects.create(title=f"{volunteer.first_name} is interviewed",
-                                         interviewer=interviewers,
+                    Event.objects.create(title=f"مصاحبه با {volunteer.first_name} ",
+                                         interviewer=interviewers[0],
                                          interviewee=volunteer,
                                          time=time_obj,
                                          link_meeting=link_meeting)
@@ -78,12 +76,8 @@ class EventViewSet(viewsets.ViewSet):
         else:
             return Result.error(message=serializer.errors)
 
-    @extend_schema(responses=TimeSerializer)
-    def list(self, request, *args, **kwargs):
-        subject = 'Test Email'
-        message = 'This is a test email sent using SMTP in Django.'
-        from_email = 'test@pakat.net'
-        recipient_list = ['ksm182014@gmail.com']
-        send_mail(subject, message, from_email, recipient_list)
-        serializer = TimeSerializer(instance=self.queryset.filter(number_reserve__lt=2), many=True)
+    @extend_schema()
+    def get(self, request, *args, **kwargs):
+        queryset = Time.objects.filter(number_reserve__lt=2)
+        serializer = TimeSerializer(instance=queryset, many=True)
         return Result.data(data=serializer.data)

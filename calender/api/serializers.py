@@ -1,15 +1,11 @@
 from rest_framework import serializers
 
-from calender.models import Event, Time
+from calender.models import Time
 
 
-class EventSerializer(serializers.ModelSerializer):
+class EventSerializer(serializers.Serializer):
     time_id = serializers.IntegerField()
     email = serializers.RegexField(regex=r'^[a-zA-Z0-9._%+-]+@gmail\.com$')
-
-    class Meta:
-        model = Event
-        fields = ('time_id', 'email')
 
 
 class TimeSerializer(serializers.ModelSerializer):

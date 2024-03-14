@@ -6,9 +6,7 @@ from django.urls import (
 
 from django.conf.urls.static import static
 from django.conf import settings
-from rest_framework.routers import DefaultRouter
-from calender.api.views import EventViewSet
-from volunteer.api.views import VolunteerCreate
+
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -16,15 +14,12 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-router = DefaultRouter()
-router.register(r"event", EventViewSet)
-router.register(r"volunteer", VolunteerCreate)
-
 urlpatterns = [
                   path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
                   # Optional UI:
                   path('ista/', admin.site.urls),
-                  path('api/', include(router.urls)),
+                  path('api/volunteer', include('volunteer.api.urls')),
+                  path('api/calender', include('calender.api.urls')),
                   # Optional UI:
                   # Optional UI:
                   path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
