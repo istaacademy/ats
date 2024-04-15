@@ -23,7 +23,7 @@ class VolunteerAdminForm(forms.ModelForm):
 
 class VolunteerAdmin(admin.ModelAdmin):
     form = VolunteerAdminForm
-    list_display = ('first_name', 'last_name', 'email', 'status', 'state')
+    list_display = ('first_name', 'last_name', 'email', 'status', 'state', 'show_firm_url')
     search_fields = ('first_name', 'last_name', 'email')
     list_filter = ('state',)
     readonly_fields = ('first_name',
@@ -34,7 +34,7 @@ class VolunteerAdmin(admin.ModelAdmin):
                        'url_github',
                        'year_of_birth',
                        'is_send_email',
-                       'url_linkedin')
+                       'url_linkedin',)
 
     def show_firm_url(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.url_linkedin)
