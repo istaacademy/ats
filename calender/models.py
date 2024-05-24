@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from volunteer.models import Volunteer, Status
+from accounts.models import User
+from volunteer.models import Volunteer
 from django.utils.translation import gettext as _
 
 
@@ -8,7 +8,7 @@ class Time(models.Model):
     day = models.DateField(verbose_name=_('روز'))
     start_time = models.TimeField(verbose_name=_('زمان شروع '))
     end_time = models.TimeField(verbose_name=_('زمان پایان'))
-    number_reserve = models.PositiveIntegerField(default=0, verbose_name=_("حد مجاز رزرو"))
+    number_reserve = models.PositiveIntegerField(default=0, verbose_name=_(" تعداد بار رزرو"))
 
     class Meta:
         verbose_name = "زمان"
