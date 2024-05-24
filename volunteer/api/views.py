@@ -11,7 +11,8 @@ from volunteer.models import (
 )
 from utils.response_model import Result
 from drf_spectacular.utils import extend_schema
-from services.google.send_gmail import send_email
+# from services.google.send_gmail import send_email
+from volunteer.tasks import send_email_task
 
 
 class VolunteerApiview(APIView):
@@ -24,14 +25,15 @@ class VolunteerApiview(APIView):
             serializer.validated_data["state"] = state
             serializer.validated_data["status"] = status_obj
             try:
-                print(serializer.validated_data)
-                obj = Volunteer.objects.create(**serializer.validated_data)
-
-                is_send = send_email(serializer.validated_data["first_name"],
-                                     serializer.validated_data["last_name"],
-                                     serializer.validated_data["email"], )
-                obj.is_send_email = is_send
-                obj.save()
+                Volunteer.objects.create(**serializer.validated_data)
+                send_email_task.delay(name=serializer.validated_data["first_name"],
+                                      family=serializer.validated_data["last_name"],
+                                      receiver_email=serializer.validated_data["email"])
+                # is_send = send_email(serializer.validated_data["first_name"],
+                #                      serializer.validated_data["last_name"],
+                #                      serializer.validated_data["email"], )
+                # obj.is_send_email = is_send
+                # obj.save()
                 return Result.data(data={}, status=status.HTTP_201_CREATED,
                                    message="created successfully")
             except Exception as ex:

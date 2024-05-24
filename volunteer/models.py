@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from course.models import Course
 
 
 class State(models.Model):
@@ -46,6 +47,7 @@ class Volunteer(models.Model):
     url_linkedin = models.URLField(verbose_name=_("Url linkedin"))
     register_time = models.DateTimeField(auto_now_add=True, verbose_name=_("Register time"))
     is_send_email = models.BooleanField(default=False, verbose_name=_("Is send email"))
+    course = models.ManyToManyField(Course, through='CourseVolunteer', blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name}-{self.last_name}"
@@ -54,3 +56,9 @@ class Volunteer(models.Model):
         ordering = ("register_time",)
         verbose_name = "داوطلب"
         verbose_name_plural = "داوطلب ها"
+
+
+class CourseVolunteer(models.Model):
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    # You can add additional fields here if needed
