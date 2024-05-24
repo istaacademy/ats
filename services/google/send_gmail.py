@@ -10,7 +10,7 @@ cwd = os.getcwd()
 file_path = f'{cwd}/services/google/test.pdf'
 
 
-def create_message(sender, to, subject, body):
+def _create_message(sender, to, subject, body):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
@@ -37,7 +37,7 @@ def create_message(sender, to, subject, body):
     return {'raw': raw}
 
 
-def send_message(service, user_id, message):
+def _send_message(service, user_id, message):
     try:
         message = (service.users().messages().send(userId=user_id, body=message)
                    .execute())
@@ -52,7 +52,7 @@ def send_email(name: str, family: str, receiver_email: str):
     service = authentication(service_name="gmail")
     # HTML template with variables
 
-    recipient_name = f" {family}{name} "
+    recipient_name = f" {family}-{name} "
 
     email_body_html = f"""
     <!DOCTYPE html>
@@ -85,8 +85,8 @@ def send_email(name: str, family: str, receiver_email: str):
        </body>
     </html>
     """
-    test_message = create_message('istaacademyinfo@gmail.com',
+    test_message = _create_message('istaacademyinfo@gmail.com',
                                   receiver_email, 'Task',
                                   email_body_html)
 
-    return send_message(service, 'me', test_message)
+    return _send_message(service, 'me', test_message)
