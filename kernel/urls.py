@@ -20,6 +20,7 @@ urlpatterns = [
                   path('ista/', admin.site.urls),
                   path('api/volunteer', include('volunteer.api.urls')),
                   path('api/calender', include('calender.api.urls')),
+                  path('', include('django_prometheus.urls')),
                   # Optional UI:
                   # Optional UI:
                   path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
