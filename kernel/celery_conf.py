@@ -16,11 +16,9 @@ app.autodiscover_tasks()
 app.conf.task_queues = [
     Queue('email', Exchange('email'), routing_key='email'),
     Queue('git', Exchange('git'), routing_key='git'),
-    Queue('meeting', Exchange('meeting'), routing_key='meeting'),
 ]
 
 app.conf.task_acks_late = True
-app.conf.task_default_priority = 5
 app.conf.worker_prefetch_multiplier = 1
 app.conf.worker_concurrency = 1
 app.conf.result_expires = timedelta(days=1)
