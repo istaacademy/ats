@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import (
@@ -8,10 +9,10 @@ from volunteer.models import (
     Volunteer,
     Status,
     State,
+    Task
 )
 from utils.response_model import Result
 from drf_spectacular.utils import extend_schema
-# from services.google.send_gmail import send_email
 from volunteer.tasks import send_email_task
 
 
@@ -25,22 +26,17 @@ class VolunteerApiview(APIView):
             serializer.validated_data["state"] = state
             serializer.validated_data["status"] = status_obj
             try:
-                Volunteer.objects.create(**serializer.validated_data)
+                volunteer = Volunteer.objects.create(**serializer.validated_data)
                 send_email_task.delay(name=serializer.validated_data["first_name"],
-                                      family=serializer.validated_data["last_name"],
-                                      receiver_email=serializer.validated_data["email"])
-                # is_send = send_email(serializer.validated_data["first_name"],
-                #                      serializer.validated_data["last_name"],
-                #                      serializer.validated_data["email"], )
-                # obj.is_send_email = is_send
-                # obj.save()
+                                      receiver_email=serializer.validated_data["email"],
+                                      volunteer_id = volunteer.id)
                 return Result.data(data={}, status=status.HTTP_201_CREATED,
                                    message="created successfully")
             except Exception as ex:
                 if 'UNIQUE constraint failed: volunteer_volunteer.email' in str(ex):
                     # Inform the user that the email is already taken
                     return Result.error(message=
-                                        "Error: This email address is already in use. Please choose a different email.")
+                                        "داوطلب گرامی قبلا شما ثبت نام کرده اید")
 
         else:
             return Result.error(message=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -49,10 +45,10 @@ class VolunteerApiview(APIView):
     def put(self, request, *args, **kwargs):
         serializer = VolunteerUpdateSerializer(data=request.data)
         if serializer.is_valid():
-            volunteer = Volunteer.objects.filter(email=serializer.validated_data["email"])
+            volunteer = Volunteer.objects.filter(email=serializer.validated_data["email"]).first()
             if volunteer.exists():
-                volunteer.update(url_github=serializer.validated_data["url_github"])
-                volunteer.first().save()
+                Task.objects.filter(volunteer_id=volunteer.id).update(response_time=datetime.datetime.today(),
+                                                                      file=serializer.validated_data["file"])
                 return Result.data(data={}, status=status.HTTP_200_OK, message="update successfully")
             else:
                 return Result.error(message="چنین داوطلبی وجود ندارد", status=status.HTTP_404_NOT_FOUND)

@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Volunteer, State, Status
+from .models import (
+    Volunteer,
+    State,
+    Status,
+    Task
+)
 from django.utils.html import format_html
 from calender.models import Event
 from django.db.models import Q
@@ -23,7 +28,7 @@ class VolunteerAdminForm(forms.ModelForm):
 
 class VolunteerAdmin(admin.ModelAdmin):
     form = VolunteerAdminForm
-    list_display = ('first_name', 'last_name', 'email', 'status', 'state', 'show_firm_url')
+    list_display = ('first_name', 'last_name', 'email', 'status', 'state', 'show_firm_url',)
     search_fields = ('first_name', 'last_name', 'email')
     list_filter = ('state',)
     readonly_fields = ('first_name',
@@ -33,18 +38,17 @@ class VolunteerAdmin(admin.ModelAdmin):
                        'phone_number',
                        'url_github',
                        'year_of_birth',
-                       'is_send_email',
                        'url_linkedin',)
 
     def show_firm_url(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.url_linkedin)
 
-    show_firm_url.short_description = 'LinkedIn'
+    show_firm_url.short_description = 'ادرس لینکدین'
 
     def get_list_display(self, request):
         # Customize the list_display based on user permissions
         if request.user.is_superuser:
-            return self.list_display + ('phone_number', 'show_firm_url', 'is_send_email')
+            return self.list_display + ('phone_number', 'is_special')
         return self.list_display
 
     def get_queryset(self, request):
@@ -86,3 +90,15 @@ class StateAdmin(admin.ModelAdmin):
 
 
 admin.site.register(State, StateAdmin)
+
+
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('volunteer',
+                    'send_time',
+                    'response_time',
+                    'file',
+                    )
+    readonly_fields = ('send_time', 'response_time', 'volunteer')
+
+
+admin.site.register(Task, TaskAdmin)

@@ -1,6 +1,4 @@
-import json
 from rest_framework import serializers
-from volunteer.models import Volunteer
 
 
 class VolunteerCreateSerializer(serializers.Serializer):
@@ -14,4 +12,4 @@ class VolunteerCreateSerializer(serializers.Serializer):
 
 class VolunteerUpdateSerializer(serializers.Serializer):
     email = serializers.RegexField(regex=r'^[a-zA-Z0-9._%+-]+@gmail\.com$')
-    url_github = serializers.URLField()
+    task = serializers.FileField()
