@@ -53,15 +53,19 @@ def send_email(name: str, status: str, receiver_email: str):
     test_message = None
     if status == "task":
         test_message = _create_message('istaacademyinfo@gmail.com',
-                                       receiver_email, 'انجام تسک',
+                                       receiver_email, 'مرحله اول: چالش فنی',
                                        email_body_html, status="task")
     elif status == "accept-task":
         test_message = _create_message('istaacademyinfo@gmail.com',
-                                       receiver_email, 'ست کردن تایم مصاحبه',
+                                       receiver_email, 'مرحله دوم: مصاحبه با منابع انسانی',
                                        email_body_html)
     elif status == "accept-hr":
         test_message = _create_message('istaacademyinfo@gmail.com',
-                                       receiver_email, 'پرداخت شهریه',
+                                       receiver_email, 'مرحله پایانی - پرداخت شهریه',
+                                       email_body_html)
+    elif status == "reject-hr" or status == "reject-task":
+        test_message = _create_message('istaacademyinfo@gmail.com',
+                                       receiver_email, 'Reject',
                                        email_body_html)
 
     return _send_message(service, 'me', test_message)

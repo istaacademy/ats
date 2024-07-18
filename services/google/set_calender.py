@@ -4,7 +4,7 @@ from services.google.auth import authentication
 
 def set_meeting(start: datetime, end: datetime, volunteer_email: str, interviewer_email: str, date):
     event = {
-        'summary': " جلسه مصاحبه با hr (کارخانه هیولاسازی Front-end)",
+        'summary': "جلسه مصاحبه با منابع انسانی - کارخانه هیولا سازی فرانت اند",
         'description': "مصاحبه",
         'start': {
             'dateTime': f"{date}T{start}" if start else '2024-02-29T14:00:00-07:00',
