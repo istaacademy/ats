@@ -12,18 +12,21 @@ class EventAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('interviewer',
                     'interviewee',
                     "status",
+                    'interviewee_url_linkedin',
+                    'interviewee_year_of_birth',
                     "show_firm_url",
                     "get_time_jalali",
                     )
-    search_fields = ('title',)
+    search_fields = ('interviewer',)
     list_editable = ('status',)
     list_filter = ("status", "time",)
-    readonly_fields = ("interviewer", "interviewee", "time", "show_firm_url", "title", "link_meeting")
+    readonly_fields = ("interviewer", "interviewee", "time", "show_firm_url", "title", "link_meeting",
+                       'interviewee_url_linkedin', 'interviewee_year_of_birth')
 
     def get_list_display(self, request):
         # Customize the list_display based on user permissions
         if request.user.is_superuser:
-            return self.list_display + ('title', 'description',)
+            return self.list_display + ('description',)
         return self.list_display
 
     def show_firm_url(self, obj):
@@ -31,6 +34,14 @@ class EventAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
 
     show_firm_url.allow_tags = True
     show_firm_url.short_description = 'لینک جلسه'
+
+    def interviewee_url_linkedin(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.interviewee.url_linkedin)
+    interviewee_url_linkedin.short_description = ' لینکدین داوطلب'
+
+    def interviewee_year_of_birth(self, obj):
+        return obj.interviewee.year_of_birth if obj.interviewee else ''
+    interviewee_year_of_birth.short_description = ' سال تولد داوطلب'
 
     @admin.display(description='تاریخ جلسه', ordering='time')
     def get_time_jalali(self, obj):
