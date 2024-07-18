@@ -19,3 +19,12 @@ def send_email_accept_task(name, receiver_email):
 def send_email_accept_hr(name, receiver_email):
     send_email(name, "accept-hr", receiver_email)
 
+
+@shared_task(queue='email', default_retry_delay=5, retry_kwargs={'max_retries': 5})
+def send_email_reject_hr(name, receiver_email):
+    send_email(name, "reject-hr", receiver_email)
+
+
+@shared_task(queue='email', default_retry_delay=5, retry_kwargs={'max_retries': 5})
+def send_email_reject_task(name, receiver_email):
+    send_email(name, "reject-task", receiver_email)
