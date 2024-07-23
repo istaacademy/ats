@@ -14,7 +14,7 @@ file_path = f'{cwd}/services/google/test.pdf'
 def _create_message(sender, to, subject, body, status: str = None):
     message = MIMEMultipart()
     message['to'] = to
-    message['from'] = sender
+    message['from'] = f"ISTA Academy <{sender}>"
     message['subject'] = subject
 
     # Create a MIMEText object with HTML content
