@@ -11,6 +11,11 @@ def user_directory_path(instance, filename):
                                            filename)
 
 
+class TaskTime(models.Model):
+    hours = models.PositiveIntegerField(default=0, verbose_name=_("ساعت"))
+    days = models.PositiveIntegerField(default=0, verbose_name=_('روز'))
+
+
 class Task(models.Model):
     volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE, related_name="tasks", verbose_name=_("داوطلب"))
     subject = models.CharField(max_length=300, verbose_name=_("موضوع"), null=True, blank=True)

@@ -14,6 +14,9 @@ from volunteer.models import (
 from utils.response_model import Result
 from drf_spectacular.utils import extend_schema
 from volunteer.tasks import send_email_task
+import pytz
+
+tehran_tz = pytz.timezone("Asia/Tehran")
 
 
 class VolunteerApiview(APIView):
@@ -29,7 +32,7 @@ class VolunteerApiview(APIView):
                 volunteer = Volunteer.objects.create(**serializer.validated_data)
                 send_email_task.delay(name=serializer.validated_data["first_name"],
                                       receiver_email=serializer.validated_data["email"],
-                                      volunteer_id = volunteer.id)
+                                      volunteer_id=volunteer.id)
                 return Result.data(data={}, status=status.HTTP_201_CREATED,
                                    message="created successfully")
             except Exception as ex:
@@ -46,10 +49,15 @@ class VolunteerApiview(APIView):
         serializer = VolunteerUpdateSerializer(data=request.data)
         if serializer.is_valid():
             volunteer = Volunteer.objects.filter(email=serializer.validated_data["email"]).first()
-            if volunteer.exists():
-                Task.objects.filter(volunteer_id=volunteer.id).update(response_time=datetime.datetime.today(),
-                                                                      file=serializer.validated_data["file"])
-                return Result.data(data={}, status=status.HTTP_200_OK, message="update successfully")
+            if volunteer:
+                task = Task.objects.filter(volunteer_id=volunteer.id).first()
+                if datetime.datetime.now(tehran_tz) <= task.send_time + datetime.timedelta(days=3):
+                    Task.objects.filter(volunteer_id=volunteer.id).update(response_time=datetime.datetime.today(),
+                                                                          file=serializer.validated_data["task"])
+                    return Result.data(data={}, status=status.HTTP_200_OK, message="update successfully")
+                else:
+                    return Result.error(status=status.HTTP_400_BAD_REQUEST,
+                                        message="تایم انجام دادن چالش گذشته است")
             else:
                 return Result.error(message="چنین داوطلبی وجود ندارد", status=status.HTTP_404_NOT_FOUND)
         else:
