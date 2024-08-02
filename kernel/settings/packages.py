@@ -16,7 +16,6 @@ INSTALLED_APPS.append('corsheaders')
 
 INSTALLED_APPS.append("calender")
 INSTALLED_APPS.append("volunteer")
-INSTALLED_APPS.append("accounts")
 INSTALLED_APPS.append("course")
 
 REST_FRAMEWORK = {

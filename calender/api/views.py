@@ -6,8 +6,8 @@ from .serializers import (
 from volunteer.models import Volunteer
 from django.contrib.auth.models import (
     Group,
+    User
 )
-from accounts.models import User
 from drf_spectacular.utils import extend_schema
 from utils.response_model import Result
 from calender.models import (

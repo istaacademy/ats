@@ -134,9 +134,6 @@ JALALI_DATE_DEFAULTS = {
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://guest:guest@rabbitmq:5672/")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 
-
-AUTH_USER_MODEL = 'accounts.User'
-
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = (
     "accept",
