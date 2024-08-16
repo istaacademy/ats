@@ -32,7 +32,9 @@ class VolunteerApiview(APIView):
                 volunteer = Volunteer.objects.create(**serializer.validated_data)
                 send_email_task.delay(name=serializer.validated_data["first_name"],
                                       receiver_email=serializer.validated_data["email"],
-                                      volunteer_id=volunteer.id)
+                                      volunteer_id=volunteer.id,
+                                      volunteer_mobile=volunteer.phone_number,
+                                      volunteer_name=volunteer.first_name)
                 return Result.data(data={}, status=status.HTTP_201_CREATED,
                                    message="created successfully")
             except Exception as ex:
