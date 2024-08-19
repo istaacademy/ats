@@ -93,6 +93,21 @@ services:
       - redis
       - app
       - rabbitmq
+      -
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs
+    ports:
+      - 8000:8000
+      - 443:443
+    networks:
+      - main
 
 
 networks:
