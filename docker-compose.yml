@@ -93,7 +93,7 @@ services:
       - redis
       - backend
       - rabbitmq
-      -
+
   nginx:
     image: nginx:alpine
     restart: unless-stopped
