@@ -91,7 +91,7 @@ services:
       - main
     depends_on:
       - redis
-      - app
+      - backend
       - rabbitmq
       -
   nginx:
