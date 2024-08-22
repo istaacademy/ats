@@ -67,7 +67,8 @@ services:
     command: sh -c "gunicorn --config gunicorn_config.py aurigaone.wsgi:application"
     volumes:
       - .:/usr/src/app/
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - /var/certbot/conf:/etc/letsencrypt/:ro
+      - /var/www/static/:/var/www/static/
     ports:
       - "8000"
     env_file:
@@ -87,6 +88,7 @@ services:
     volumes:
       - .:/usr/src/app/
       - /var/certbot/conf:/etc/letsencrypt/:ro
+      - /var/www/static/:/var/www/static/
     env_file:
       - ./.env
     networks:
