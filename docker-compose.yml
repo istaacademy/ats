@@ -67,6 +67,7 @@ services:
     command: sh -c "gunicorn --config gunicorn_config.py aurigaone.wsgi:application"
     volumes:
       - .:/usr/src/app/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
     ports:
       - "8000"
     env_file:
@@ -85,6 +86,7 @@ services:
     command: celery -A kernel worker -l INFO -Q email,git  -E
     volumes:
       - .:/usr/src/app/
+      - /var/certbot/conf:/etc/letsencrypt/:ro
     env_file:
       - ./.env
     networks:
