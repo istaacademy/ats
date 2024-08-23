@@ -11,6 +11,10 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
+ENV APP_HOME=/usr/src/app
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/media
+
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 
 COPY . /usr/src/app/

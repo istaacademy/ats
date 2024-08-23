@@ -75,11 +75,12 @@ services:
   backend:
     container_name: app
     build: .
-    command: sh -c "gunicorn --config gunicorn_config.py aurigaone.wsgi:application"
+    command: sh -c "gunicorn --config gunicorn_config.py kernel.wsgi:application"
     volumes:
       - .:/usr/src/app/
       - /var/certbot/conf:/etc/letsencrypt/:ro
-      - /var/www/static/:/var/www/static/
+      - static_volume:/usr/src/app/staticfiles
+      - media_volume:/usr/src/app/media
     ports:
       - "8000"
     env_file:
@@ -99,7 +100,8 @@ services:
     volumes:
       - .:/usr/src/app/
       - /var/certbot/conf:/etc/letsencrypt/:ro
-      - /var/www/static/:/var/www/static/
+      - media_volume:/usr/src/app/media
+      - static_volume:/usr/src/app/staticfiles
     env_file:
       - ./.env
     networks:
@@ -116,8 +118,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /var/www/static/:/var/www/static/
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - media_volume:/usr/src/app/media
+      - static_volume:/usr/src/app/staticfiles
     depends_on:
       - backend
     networks:
