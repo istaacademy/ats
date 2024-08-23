@@ -79,6 +79,7 @@ services:
     volumes:
       - .:/usr/src/app/
       - /var/certbot/conf:/etc/letsencrypt/:ro
+      - /var/www/static/:/var/www/static/
       - static_volume:/usr/src/app/staticfiles
       - media_volume:/usr/src/app/media
     ports:
@@ -100,6 +101,7 @@ services:
     volumes:
       - .:/usr/src/app/
       - /var/certbot/conf:/etc/letsencrypt/:ro
+      - /var/www/static/:/var/www/static/
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
     env_file:
@@ -119,6 +121,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - /var/www/static/:/var/www/static/
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
     depends_on:
