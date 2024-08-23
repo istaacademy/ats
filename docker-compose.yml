@@ -49,7 +49,7 @@ services:
     networks:
       - main
     volumes:
-      - db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -141,5 +141,6 @@ networks:
   main:
 
 volumes:
-  db:
-    driver: local
+  postgres_data:
+  static_volume:
+  media_volume:
