@@ -78,12 +78,10 @@ services:
     command: sh -c "gunicorn --config gunicorn_config.py kernel.wsgi:application"
     volumes:
       - .:/usr/src/app/
-      - /var/certbot/conf:/etc/letsencrypt/:ro
       - /var/www/static/:/var/www/static/
       - static_volume:/usr/src/app/staticfiles
       - media_volume:/usr/src/app/media
-      - /etc/letsencrypt/live/www.istaacademy.com/fullchain.pem:/etc/letsencrypt/live/www.istaacademy.com/fullchain.pem
-      - /etc/letsencrypt/live/www.istaacademy.com/privkey.pem:/etc/letsencrypt/live/www.istaacademy.com/privkey.pem
+      - /etc/letsencrypt:/etc/letsencrypt/:ro
     ports:
       - "8000"
     env_file:
@@ -102,10 +100,8 @@ services:
     command: celery -A kernel worker -l INFO -Q email,git  -E
     volumes:
       - .:/usr/src/app/
-      - /var/certbot/conf:/etc/letsencrypt/:ro
       - /var/www/static/:/var/www/static/
-      - /etc/letsencrypt/live/www.istaacademy.com/fullchain.pem:/etc/letsencrypt/live/www.istaacademy.com/fullchain.pem
-      - /etc/letsencrypt/live/www.istaacademy.com/privkey.pem:/etc/letsencrypt/live/www.istaacademy.com/privkey.pem
+      - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
     env_file:
@@ -126,8 +122,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - /var/www/static/:/var/www/static/
-      - /etc/letsencrypt/live/www.istaacademy.com/fullchain.pem:/etc/letsencrypt/live/www.istaacademy.com/fullchain.pem
-      - /etc/letsencrypt/live/www.istaacademy.com/privkey.pem:/etc/letsencrypt/live/www.istaacademy.com/privkey.pem
+      - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
     depends_on:
