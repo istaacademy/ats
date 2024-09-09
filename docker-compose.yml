@@ -78,7 +78,6 @@ services:
     command: sh -c "gunicorn --config gunicorn_config.py kernel.wsgi:application"
     volumes:
       - .:/usr/src/app/
-      - /var/www/static/:/var/www/static/
       - static_volume:/usr/src/app/staticfiles
       - media_volume:/usr/src/app/media
       - /etc/letsencrypt:/etc/letsencrypt/:ro
@@ -100,7 +99,6 @@ services:
     command: celery -A kernel worker -l INFO -Q email,git  -E
     volumes:
       - .:/usr/src/app/
-      - /var/www/static/:/var/www/static/
       - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
@@ -127,11 +125,10 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
-      - /var/www/static/:/var/www/static/
       - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
-      - react_build:/var/www/front
+      - react_build:/front/build
     depends_on:
       - backend
       - frontend
