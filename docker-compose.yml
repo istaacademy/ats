@@ -110,12 +110,6 @@ services:
       - redis
       - backend
       - rabbitmq
-  frontend:
-    build:
-      context: ../front
-    volumes:
-      - react_build:/front/build
-
   nginx:
     container_name: nginx
     image: nginx:alpine
@@ -128,7 +122,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
-      - react_build:/front/build
+      - /home/ubuntu/dist:/var/www/dist
     depends_on:
       - backend
       - frontend
