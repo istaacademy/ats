@@ -114,7 +114,7 @@ services:
       - rabbitmq
   frontend:
     build:
-      context: home/ubuntu/front
+      context: ../front
     volumes:
       - react_build:/front/build
 
