@@ -112,6 +112,12 @@ services:
       - redis
       - backend
       - rabbitmq
+      -
+  frontend:
+    build:
+      context: home/ubuntu/front
+    volumes:
+      - react_build:/front/build
 
   nginx:
     container_name: nginx
@@ -126,8 +132,10 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
+      - react_build:/var/www/front
     depends_on:
       - backend
+      - frontend
     networks:
       - main
 
@@ -140,3 +148,4 @@ volumes:
   postgres_data:
   static_volume:
   media_volume:
+  react_build:
