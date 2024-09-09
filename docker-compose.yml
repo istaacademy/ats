@@ -92,6 +92,7 @@ services:
       - db
       - prometheus
 
+
   celery:
     container_name: celery
     build: .
@@ -109,6 +110,12 @@ services:
       - redis
       - backend
       - rabbitmq
+  frontend:
+    build:
+      context: ../front
+    volumes:
+      - react_build:/front/dist
+
   nginx:
     container_name: nginx
     image: nginx:alpine
@@ -121,13 +128,12 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/:ro
       - media_volume:/usr/src/app/media
       - static_volume:/usr/src/app/staticfiles
-      - /home/ubuntu/dist:/var/www/dist
+      - react_build:/var/www/dist
     depends_on:
       - backend
+      - frontend
     networks:
       - main
-
-
 
 networks:
   main:
