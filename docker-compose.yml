@@ -112,7 +112,6 @@ services:
       - redis
       - backend
       - rabbitmq
-      -
   frontend:
     build:
       context: home/ubuntu/front
