@@ -92,7 +92,6 @@ services:
       - db
       - prometheus
 
-
   celery:
     container_name: celery
     build: .
@@ -125,7 +124,6 @@ services:
       - /home/ubuntu/dist:/var/www/dist
     depends_on:
       - backend
-      - frontend
     networks:
       - main
 
