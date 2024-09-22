@@ -96,7 +96,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -105,10 +104,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 X_FRAME_OPTIONS = "SAMEORIGIN"  # allows you to use modals insated of popups
 SILENCED_SYSTEM_CHECKS = ["security.W019"]  # ignores redundant warning messages
 
-
 # default settings (optional)
 JALALI_DATE_DEFAULTS = {
-   'Strftime': {
+    'Strftime': {
         'date': '%y/%m/%d',
         'datetime': '%H:%M:%S _ %y/%m/%d',
     },
@@ -131,11 +129,12 @@ JALALI_DATE_DEFAULTS = {
     },
 }
 
-
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://guest:guest@rabbitmq:5672/")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
+                        "http://localhost:3003", "http://localhost:8000", ]
+
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
@@ -144,3 +143,6 @@ CORS_ALLOW_HEADERS = (
     "x-csrftoken",
     "x-requested-with",
 )
+
+CSRF_TRUSTED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
+                        "http://localhost:3003", "http://localhost:8000", ]
