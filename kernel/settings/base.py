@@ -135,14 +135,17 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
                         "http://localhost:3003", "http://localhost:8000", ]
 
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 CSRF_TRUSTED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
                         "http://localhost:3003", "http://localhost:8000", ]
