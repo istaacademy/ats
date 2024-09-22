@@ -8,7 +8,7 @@ import os.path
 import base64
 
 cwd = os.getcwd()
-file_path = f'{cwd}/services/google/test.pdf'
+file_path = f'{cwd}/services/google/Assignment.pdf'
 
 
 def _create_message(sender, to, subject, body, status: str = None):
