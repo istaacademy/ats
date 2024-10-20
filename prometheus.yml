@@ -3,7 +3,10 @@ global:
   evaluation_interval: 30s # time between each evaluation of Prometheus' alerting rules , The default is every 1 minute.
 
 scrape_configs:
-  - job_name: app   # your project name
+  - job_name: app
+    scheme: https
     static_configs:
       - targets:
-        - app:8000
+        - app:443
+    tls_config:
+      insecure_skip_verify: true
