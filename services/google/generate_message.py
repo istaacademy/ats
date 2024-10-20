@@ -30,7 +30,7 @@ def generate_message(first_name, status):
         <p>حواست به زمان خیلی باشه</p>
         <p>بترکونی بچه هیولا....:)</p>
         <p>لینک آپلود تسک </p>
-        <a href="https://www.istaacademy.com/upload_task"></<p>
+        <a href="https://www.istaacademy.com/upload_task"></a>
             <div class="id">
               <h3>اگر به مشکل برخوردی به آیدی زیر در تلگرام پیام بده</h3>
                @ista_support
