@@ -56,6 +56,8 @@ class VolunteerAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         group = request.user.groups.all().values_list('name', flat=True)
+        if "Admin" in group:
+            return qs
         event = Event.objects.filter(interviewer=request.user.id).values_list("interviewee", flat=True)
         if event.count() > 0:
             return qs.filter(Q(state__name__in=group) & Q(id=event[0]))
