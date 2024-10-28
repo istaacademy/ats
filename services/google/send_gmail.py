@@ -53,7 +53,7 @@ def send_email(name: str, status: str, receiver_email: str):
     test_message = None
     if status == "task":
         test_message = _create_message('istaacademyinfo@gmail.com',
-                                       receiver_email, 'مرحله اول: چالش فنی',
+                                       receiver_email, 'IstaAcademy:Frontend Challenge',
                                        email_body_html, status="task")
     elif status == "accept-task":
         test_message = _create_message('istaacademyinfo@gmail.com',
