@@ -29,8 +29,7 @@ def generate_message(first_name, status):
         <p>از لحظه دریافت این ایمیل چهار روز وقت داری چالش رو برامون ارسال کنی</p>
         <p>حواست به زمان خیلی باشه</p>
         <p>بترکونی بچه هیولا....:)</p>
-        <p>لینک آپلود تسک </p>
-        <a href="https://www.istaacademy.com/upload_task">link</a>
+        <a href="https://www.istaacademy.com/upload_task">لینک آپلود تسک</a>
             <div class="id">
               <h3>اگر به مشکل برخوردی به آیدی زیر در تلگرام پیام بده</h3>
                @ista_support
@@ -69,8 +68,7 @@ def generate_message(first_name, status):
         <p>زمان مصاحبه رو از طریق لینک زیر برامون تعیین کن...</p>
         <p>تا اینجاشو که اومدی...می دونیم از پس این چالش هم برمیای</p>
         <p>بترکونی بچه هیولا....:)</p>
-        <p>لینک تعیین زمان مصاحبه</p>
-        <a href="https://www.istaacademy.com/reservation">link</a>
+        <a href="https://www.istaacademy.com/reservation">لینک تعیین زمان مصاحبه</a>
                     <div class="id">
                       <h3>اگر به مشکل برخوردی به آیدی زیر در تلگرام پیام بده</h3>
                        @ista_support
