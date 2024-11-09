@@ -14,9 +14,7 @@ from volunteer.models import (
 from utils.response_model import Result
 from drf_spectacular.utils import extend_schema
 from volunteer.tasks import send_email_task
-import pytz
-
-tehran_tz = pytz.timezone("Asia/Tehran")
+from django.utils import timezone
 
 
 class VolunteerApiview(APIView):
@@ -52,8 +50,10 @@ class VolunteerApiview(APIView):
         if serializer.is_valid():
             volunteer = Volunteer.objects.filter(email=serializer.validated_data["email"]).first()
             if volunteer:
-                Task.objects.filter(volunteer_id=volunteer.id).update(response_time=datetime.datetime.today(),
-                                                                      file=serializer.validated_data["task"])
+                task = Task.objects.filter(volunteer_id=volunteer.id).first()
+                task.response_time = timezone.now()
+                task.file = serializer.validated_data["task"]
+                task.save()
                 return Result.data(data={}, status=status.HTTP_200_OK, message="update successfully")
             else:
                 return Result.error(message="چنین داوطلبی وجود ندارد", status=status.HTTP_404_NOT_FOUND)
