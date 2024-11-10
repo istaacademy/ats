@@ -15,6 +15,7 @@ from calender.models import (
     Time,
 )
 from rest_framework.views import APIView
+from rest_framework import status
 from calender.tasks import create_meeting
 
 
@@ -32,11 +33,9 @@ class EventApiView(APIView):
                 if time_obj.number_reserve > 0:
                     event = Event.objects.get(time_id=time_obj.id)
                     if event.interviewee == volunteer:
-                        return Result.error(message="کاربر عزیز شما قبلا زمان مصاحبه خود را ست کرده اید.")
-                    user_interviewer = event.interviewer
-                    interviewers_new = [interviewer_new for interviewer_new in interviewers if
-                                        user_interviewer != interviewer_new]
-                    interviewer_new = random.choices(interviewers_new)[0]
+                        return Result.error(status=status.HTTP_400_BAD_REQUEST,
+                                            message="کاربر عزیز شما زمان مصاحبه خود را ست کرده اید.")
+                    interviewer_new = interviewers.first()
                     # create meetings in google calender
                     event_obj = Event.objects.create(title=f"مصاحبه با{volunteer.first_name} ",
                                                      interviewer=interviewer_new,
