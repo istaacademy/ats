@@ -75,6 +75,6 @@ class EventApiView(APIView):
 
     @extend_schema()
     def get(self, request, *args, **kwargs):
-        queryset = Time.objects.filter(number_reserve__lt=2)
+        queryset = Time.objects.filter(number_reserve__lt=1)
         serializer = TimeSerializer(instance=queryset, many=True)
         return Result.data(data=serializer.data)
