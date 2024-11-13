@@ -30,7 +30,7 @@ class VolunteerAdmin(admin.ModelAdmin):
     form = VolunteerAdminForm
     list_display = ('first_name', 'last_name', 'email', 'status', 'state', 'show_firm_url',)
     search_fields = ('first_name', 'last_name', 'email')
-    list_filter = ('state',)
+    list_filter = ('state', 'status')
     readonly_fields = ('first_name',
                        'last_name',
                        'email',

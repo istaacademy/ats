@@ -93,9 +93,6 @@ def generate_message(first_name, status):
                 <h3>مرحله دوم رو هم تایید شدی</h3>
                 <p>دمت گرم</p>
                 <p>می دونستیم از پس HR جماعت برمیای 😉</p>
-                <p>برای مرحله آخر فقط باید وارد لینک زیر بشی و قسط اول دوره رو پرداخت کنی</p>
-                <!-- Replace the following line with the actual payment link -->
-                <a href="YOUR-PAYMENT-LINK-HERE">Click here to make your payment</a>
                 <p>خیلی زود می بینیمت بچه هیولا....</p>
             </div>
             <div class="id">
