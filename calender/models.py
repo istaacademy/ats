@@ -22,7 +22,7 @@ class Event(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'مصاحبه انجام نشده'),
         ('Accept', 'تایید'),
-        ('Rejected', 'عدم تایید'),
+        ('Reject', 'عدم تایید'),
     ]
     title = models.CharField(max_length=200, verbose_name=_("عنوان"))
     description = models.TextField(blank=True, null=True, max_length=300, verbose_name=_("توضیحات"))
