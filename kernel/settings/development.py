@@ -15,3 +15,5 @@ DATABASES = {
 REDIS_HOST = config("REDIS_HOST")
 REDIS_PORT = config("REDIS_PORT", cast=int)
 VERSION = "V1"
+
+SECRET_KEY = config('SECRET_KEY')

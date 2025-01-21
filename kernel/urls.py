@@ -18,8 +18,8 @@ urlpatterns = [
                   path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
                   # Optional UI:
                   path('ista/', admin.site.urls),
-                  path('api/volunteer', include('volunteer.api.urls')),
-                  path('api/calender', include('calender.api.urls')),
+                #   path('api/volunteer', include('volunteer.api.urls')),
+                #   path('api/calender', include('calender.api.urls')),
                   path('', include('django_prometheus.urls')),
                   # Optional UI:
                   # Optional UI:
