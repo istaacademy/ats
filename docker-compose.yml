@@ -55,23 +55,6 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
 
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    ports:
-      - 5672
-      - 15672
-    networks:
-      - main
-
-  redis:
-    container_name: redis
-    image: redis:7.0.11-alpine
-    restart: always
-    networks:
-      - main
-
-
   backend:
     container_name: app
     build: .
@@ -92,24 +75,6 @@ services:
       - db
       - prometheus
 
-
-  celery:
-    container_name: celery
-    build: .
-    command: celery -A kernel worker -l INFO -Q email,git  -E
-    volumes:
-      - .:/usr/src/app/
-      - /etc/letsencrypt:/etc/letsencrypt/:ro
-      - media_volume:/usr/src/app/media
-      - static_volume:/usr/src/app/staticfiles
-    env_file:
-      - ./.env
-    networks:
-      - main
-    depends_on:
-      - redis
-      - backend
-      - rabbitmq
   frontend:
     build:
       context: ../front
