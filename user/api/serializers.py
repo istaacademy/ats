@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 class CreateUserSerilaizers(serializers.Serializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email','first_name', 'last_name','password']
+        fields = ['id', 'username', 'email','first_name', 'last_name','password' , 'phone']
 
         read_only_fields = [] 
     def create(self, validated_data):
