@@ -14,9 +14,11 @@ INSTALLED_APPS.append('corsheaders')
 # local apps
 # ##########
 
-# INSTALLED_APPS.append("calender")
-# INSTALLED_APPS.append("volunteer")
+# 'jalali_date',
 INSTALLED_APPS.append("user")
+INSTALLED_APPS.append("course")
+INSTALLED_APPS.append("video")
+INSTALLED_APPS.append("comment")
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
