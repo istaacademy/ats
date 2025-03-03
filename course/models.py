@@ -26,7 +26,7 @@ class CourseUserModel(models.Model):
         ('volunteer', 'VOLUNTEER'),
         ('mentor', 'MENTOR'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE , null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     relation = models.CharField(max_length=10, choices=RELATION_CHOISE, default='volunteer')

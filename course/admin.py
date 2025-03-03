@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models import (
     Course ,
-    CourseUserModel \
+     
 )
 
 from jalali_date import date2jalali
-from jalali_date.admin import ModelAdminJalaliMixin
+# from jalali_date.admin import ModelAdminJalaliMixin
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = (

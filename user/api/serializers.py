@@ -48,7 +48,7 @@ class SinginSerializer(serializers.Serializer):
 
         verification_code  = random.randit(1000 , 99999)
         user.verification_code = verification_code
-        user.save()
+        user.save()  #change to session django
 
 
         print(f"verifaction Code : {verification_code}")
@@ -58,7 +58,6 @@ class SinginSerializer(serializers.Serializer):
 
 
 class VerificationSerializer(serializers.Serializer):
-    phone = serializers.CharField(max_length = 11)
     verification_code = serializers.CharField(max_length = 5)
 
     def validate(self, attrs):
@@ -72,9 +71,6 @@ class VerificationSerializer(serializers.Serializer):
         if user.verification_code != verification_code:
             raise serializers.ValidationError("کد تأیید نامعتبر است.")
 
-        refresh = RefreshToken.for_user(user)
-        attrs['refresh'] = str(refresh)
-        attrs['access'] = str(refresh.access_token)
 
         return attrs
 
