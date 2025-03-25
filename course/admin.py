@@ -1,28 +1,46 @@
 from django.contrib import admin
-from .models import (
+from course.models import (
     Course ,
+    CourseUserModel,
+    TimeCourse
      
 )
 
 from jalali_date import date2jalali
-# from jalali_date.admin import ModelAdminJalaliMixin
+from jalali_date.admin import ModelAdminJalaliMixin
 
-class CourseAdmin(admin.ModelAdmin):
+
+class TimeCourseInline(admin.TabularInline):  # یا StackedInline برای نمایش عمودی
+    model = TimeCourse
+    extra = 1  # تعداد فرم‌های خالی پیش‌فرض
+    fields = ('start_time', 'end_time', 'day')
+
+
+@admin.register(Course)
+class CourseAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = (
                     'title',
                     "registration",
                     "reservation",
                     "capacity",
+                    "get_time_jalali",
+                    "session_number",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
                     )
-    search_fields = ('registration_time',)
-    list_filter = ("registration_time",)
-    #
-    # @admin.display(description='تاریخ ', ordering='day')
-    # def get_day_jalali(self, obj):
-    #     return date2jalali(obj.registration_time).strftime('%d-%B')
+    readonly_fields = ("registration", "reservation")
+    inlines = [TimeCourseInline]  # اضافه کردن اینلاین
 
 
+    @admin.display(description='تاریخ ثبت نام', ordering='day')
+    def get_time_jalali(self, obj):
+        start_date = date2jalali(obj.start_time).strftime('%d %B %Y')
+        end_date = date2jalali(obj.end_time).strftime('%d %B %Y')
+        return f"{start_date}  to {end_date}"
 
-admin.site.register(Course, CourseAdmin)
+@admin.register(CourseUserModel)
+class CourseUserModelAdmin(admin.ModelAdmin):
+    list_display = ('course', 'user', 'relation', 'created_at')
+    raw_id_fields = ("user", 'course')
+    list_filter = ('created_at', 'updated_at', 'relation')
+
