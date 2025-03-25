@@ -149,8 +149,3 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
                         "http://localhost:3003", "http://localhost:8000", ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  
-SESSION_COOKIE_AGE = 1209600 
-SESSION_COOKIE_NAME = 'my_session_cookie'  
-SESSION_COOKIE_SECURE = True  
-SESSION_SAVE_EVERY_REQUEST = True

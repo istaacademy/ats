@@ -18,7 +18,10 @@ urlpatterns = [
                   path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
                   # Optional UI:
                   path('ista/', admin.site.urls),
-                  # path('api/calender', include('calender.api.urls')),
+                  path('api/', include('video.api.urls')),
+                  path('api/', include('user.api.urls')),
+                  path('api/', include('course.api.urls')),
+                  path('api/', include('comment.api.urls')),
                   path('', include('django_prometheus.urls')),
                   # Optional UI:
                   path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

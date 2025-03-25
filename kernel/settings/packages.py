@@ -9,6 +9,7 @@ INSTALLED_APPS.append('drf_spectacular')
 INSTALLED_APPS.append('apptemplates')
 INSTALLED_APPS.append('django_prometheus')
 INSTALLED_APPS.append('corsheaders')
+INSTALLED_APPS.append('jalali_date')
 
 # ##########
 # local apps
