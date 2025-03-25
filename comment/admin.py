@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Comment
-# Register your models here.
+from comment.models import Comment
 
 
-
-
-admin.site.register(Comment)
-
-
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('course', 'user', 'created_at', 'is_reply', 'updated_at',)
+    search_fields = ('body',)
+    raw_id_fields = ("user", 'course', 'reply')
+    list_filter = ('created_at', 'updated_at', 'is_reply')
 
 
 
