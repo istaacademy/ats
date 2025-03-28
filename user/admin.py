@@ -2,8 +2,16 @@ from django.contrib import admin
 from user.models import User,Profile
 from django.utils.html import format_html
 
-admin.site.register(User)
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+                    "username",
+                    "phone_number",
+                    "is_active",
 
+                    )
+    search_fields = ('username',)
+    list_filter = ("is_active", "is_superuser", "is_staff")
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):

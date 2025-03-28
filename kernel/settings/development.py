@@ -2,6 +2,7 @@ from .base import *
 from .secure import *
 from .packages import *
 from decouple import config
+from datetime import timedelta
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(',')])
 
@@ -18,15 +19,28 @@ VERSION = "V1"
 
 SECRET_KEY = config('SECRET_KEY')
 
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_AGE = 1209600
-SESSION_COOKIE_NAME = 'my_session_cookie'
-SESSION_COOKIE_SECURE = True
-SESSION_SAVE_EVERY_REQUEST = True
-
-
 MINIO_STORAGE_ACCESS_KEY = config("MINIO_STORAGE_ACCESS_KEY")
 MINIO_STORAGE_SECRET_KEY = config("MINIO_STORAGE_SECRET_KEY")
 MINIO_STORAGE_ENDPOINT = config("MINIO_STORAGE_ENDPOINT")
 MINIO_STORAGE_MEDIA_BUCKET_NAME = config("MINIO_STORAGE_MEDIA_BUCKET_NAME")
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ATS Ista Academy',
+    'VERSION': '2.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=config("ACCESS_TOKEN_LIFETIME", cast=int)),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=config("REFRESH_TOKEN_LIFETIME", cast=int)),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+

@@ -1,3 +1,4 @@
+from decouple import config
 from .base import INSTALLED_APPS
 
 # ###########
@@ -10,6 +11,7 @@ INSTALLED_APPS.append('apptemplates')
 INSTALLED_APPS.append('django_prometheus')
 INSTALLED_APPS.append('corsheaders')
 INSTALLED_APPS.append('jalali_date')
+INSTALLED_APPS.append('rest_framework_simplejwt')
 
 # ##########
 # local apps
@@ -20,14 +22,4 @@ INSTALLED_APPS.append("user")
 INSTALLED_APPS.append("course")
 INSTALLED_APPS.append("video")
 INSTALLED_APPS.append("comment")
-
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'ATS Ista Academy',
-    'VERSION': '2.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-}
 

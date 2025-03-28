@@ -60,6 +60,7 @@ TEMPLATES = [
 #     ('admin_interface', 'admin_interface/templates'),
 # ]
 
+AUTH_USER_MODEL = 'user.User'
 ROOT_URLCONF = 'kernel.urls'
 WSGI_APPLICATION = 'kernel.wsgi.application'
 

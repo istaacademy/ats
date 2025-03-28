@@ -3,16 +3,20 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class User(AbstractUser):
     email = models.EmailField(unique=True , blank=True, null=True)
-    phone = models.CharField(max_length=11, blank=True, null=True)
+    phone_number = models.CharField(max_length=11, unique=True)
     groups = models.ManyToManyField(Group, related_name='custom_user_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='custom_permission_set', blank=True)
+    REQUIRED_FIELDS = ["phone_number"]
+    first_name = None
+    last_name = None
+
 
     class Meta:
         indexes = [
             models.Index(fields=['email']),  
         ]
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = 'کاربر'
+        verbose_name_plural = 'کاربر ها'
 
 
 
