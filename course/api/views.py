@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
+from utils.response_model import Result
 from rest_framework import status
 from course.api.serializers import *
 from rest_framework.permissions import IsAuthenticated
@@ -13,8 +13,8 @@ class CourseRegisterAPIView(APIView):
         serializer = CourseRegisterSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Result.data(data=serializer.data, message="course created!")
+        return Result.error(message=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
 
 
 class MyCourseListAPIView(APIView):
@@ -25,9 +25,9 @@ class MyCourseListAPIView(APIView):
         courses = Course.objects.filter(id__in=list(objects))
         if courses.exists():
             serializer = CourseSerializer(courses, many=True)
-            return Response({"data": serializer.data, "code": 200}, status=status.HTTP_200_OK)
+            return Result.data(serializer.data, "get was successful!")
         else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Result.error(message="no courses")
 
 
 class CourseListAPIView(APIView):
@@ -37,9 +37,9 @@ class CourseListAPIView(APIView):
         courses = Course.objects.all()
         if courses:
             serializer = CourseSerializer(courses, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Result.data(serializer.data, "get was successful!")
         else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Result.error(message="no courses")
 
 class CourseDetailAPIView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -54,6 +54,6 @@ class CourseDetailAPIView(APIView):
     def get(self, request, pk):
         course = self.get_object(pk)
         if not course:
-            return Response(data={"message":"Not found", "data": {}}, status=status.HTTP_404_NOT_FOUND)
+            return Result.error(message="no course")
         serializer = CourseSerializer(course)
-        return Response(serializer.data)
+        return Result.data(serializer.data, "get was successful!")

@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
+from utils.response_model import Result
 from rest_framework import status
 from comment.models import Comment
 from comment.api.serializers import CommentSerializer
@@ -12,8 +12,8 @@ class CommentCreateAPIView(APIView):
         serializer = CommentSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Result.data(data=serializer.data, message="comment created!")
+        return Result.error(message=serializer.errors, code=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentListAPIView(APIView):
@@ -24,9 +24,9 @@ class CommentListAPIView(APIView):
         comments = Comment.objects.all()
         if comments:
             serializer = CommentSerializer(comments, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Result.data(data=serializer.data, message="get was successfully")
         else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Result.error(message="no comments")
 
 class CommentDetailAPIView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -41,25 +41,25 @@ class CommentDetailAPIView(APIView):
     def get(self, request, pk):
         comment = self.get_object(pk)
         if not comment:
-            return Response(data={"message":"Not found", "data": {}}, status=status.HTTP_404_NOT_FOUND)
+            return Result.error(message="Not found")
         serializer = CommentSerializer(comment)
-        return Response(serializer.data)
+        return Result.data(data=serializer.data, message="get was successfully")
 
     def put(self, request, pk):
         comment = self.get_object(pk)
         if not comment or comment.user != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Result.error(message="forbidden", code=status.HTTP_403_FORBIDDEN)
 
         serializer = CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Result.data(serializer.data, message="get was successfully", code=status.HTTP_200_OK)
+        return Result.error(message="Bad request", code=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         comment = self.get_object(pk)
         if not comment or comment.user != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Result.error(message="forbidden", code=status.HTTP_403_FORBIDDEN)
 
         comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Result.data(message="deleted successfully", code=status.HTTP_204_NO_CONTENT)
