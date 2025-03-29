@@ -15,7 +15,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class CourseRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseUserModel
-        fields = '__all__'
+        fields = ["course", "relation"]
         read_only_fields = ('created_at', 'updated_at')
 
 

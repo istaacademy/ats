@@ -1,13 +1,12 @@
-# views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from comment.models import Comment
 from comment.api.serializers import CommentSerializer
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 class CommentCreateAPIView(APIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (IsAuthenticated,)
     serializer_class = CommentSerializer
     def post(self, request):
         serializer = CommentSerializer(data=request.data, context={'request': request})
@@ -19,7 +18,8 @@ class CommentCreateAPIView(APIView):
 
 class CommentListAPIView(APIView):
     serializer_class = CommentSerializer
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         comments = Comment.objects.all()
         if comments:
@@ -29,7 +29,7 @@ class CommentListAPIView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 class CommentDetailAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = CommentSerializer
 
     def get_object(self, pk):

@@ -71,7 +71,6 @@ class ProfileAPIView(APIView):
 
    def get(self, request, user_id):
        profile = self.get_object(user_id)
-       print(profile.__dict__)
        if not profile:
            return Response(data={"message": "Not found", "data": {}}, status=status.HTTP_404_NOT_FOUND)
        serializer = ProfileSerializer(profile)

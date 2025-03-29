@@ -2,12 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from course.api.serializers import *
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 
 class CourseRegisterAPIView(APIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (IsAuthenticated, )
     serializer_class = CourseRegisterSerializer
     def post(self, request):
         serializer = CourseRegisterSerializer(data=request.data, context={'request': request})
@@ -17,9 +17,22 @@ class CourseRegisterAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CourseListAPIView(APIView):
+class MyCourseListAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = CourseSerializer
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    def get(self, request, user_id):
+        objects = CourseUserModel.objects.filter(user__id=user_id).values_list("course", flat=True)
+        courses = Course.objects.filter(id__in=list(objects))
+        if courses.exists():
+            serializer = CourseSerializer(courses, many=True)
+            return Response({"data": serializer.data, "code": 200}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class CourseListAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CourseSerializer
     def get(self, request):
         courses = Course.objects.all()
         if courses:
@@ -29,7 +42,7 @@ class CourseListAPIView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 class CourseDetailAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = CourseSerializer
 
     def get_object(self, pk):

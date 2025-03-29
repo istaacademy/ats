@@ -21,18 +21,17 @@ class CourseAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = (
                     'title',
                     "registration",
-                    "reservation",
                     "capacity",
                     "get_time_jalali",
                     "session_number",
                     "created_at",
                     "updated_at",
                     )
-    readonly_fields = ("registration", "reservation")
-    inlines = [TimeCourseInline]  # اضافه کردن اینلاین
+    readonly_fields = ("registration", )
+    inlines = [TimeCourseInline]
 
 
-    @admin.display(description='تاریخ ثبت نام', ordering='day')
+    @admin.display(description='بازه برگزاری دوره', ordering='day')
     def get_time_jalali(self, obj):
         start_date = date2jalali(obj.start_time).strftime('%d %B %Y')
         end_date = date2jalali(obj.end_time).strftime('%d %B %Y')

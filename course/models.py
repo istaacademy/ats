@@ -2,18 +2,18 @@ from django.db import models
 from user.models import User
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 
 class Course(models.Model):
     title = models.CharField(max_length=20, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    registration = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
-    reservation = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
+    registration = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     capacity = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     register_day_start = models.DateField(null=True, blank=True)
     register_day_end = models.DateField(null=True, blank=True,)
     session_number = models.PositiveIntegerField()
-    start_time = models.DateField(null=True, blank=True)
-    end_time = models.DateField(null=True, blank=True)
+    start_time = models.DateField()
+    end_time = models.DateField()
     tuition = models.PositiveIntegerField(blank=True, null=True, verbose_name=_("شهریه"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -39,6 +39,14 @@ class CourseUserModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     relation = models.CharField(max_length=10, choices=RELATION_CHOISE, default='volunteer')
 
+    # update field registration in Course Model in function save
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            course = Course.objects.get(id=self.course.id)
+            if self.relation == 'volunteer':
+                course.registration +=1
+                course.save(update_fields=['registration'])
+            super(CourseUserModel, self).save(*args, **kwargs)
 
 
 class TimeCourse(models.Model):

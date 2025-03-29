@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 class CreateUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email','first_name', 'last_name','password' , 'phone_number']
+        fields = ['username', 'email','password' , 'phone_number']
         extra_kwargs = {"password":{"write_only":True}}
 
     def create(self, validated_data):
