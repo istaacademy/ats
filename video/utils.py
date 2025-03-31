@@ -9,5 +9,5 @@ client = Minio(
 )
 
 def upload_video(file, filename, bucket_name = settings.MINIO_STORAGE_MEDIA_BUCKET_NAME):
-    response = client.put_object(bucket_name, filename, file, length=-1, part_size=10*1024*1024)
+    client.put_object(bucket_name, filename, file, length=-1, part_size=10*1024*1024)
     return f"{settings.MINIO_STORAGE_ENDPOINT}/{bucket_name}/{filename}"

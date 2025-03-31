@@ -15,9 +15,9 @@ class VideoAdminForm(forms.ModelForm):
         video = super().save(commit=False)
 
         if file:
-            filename = f"videos/{file.name}"
-            file_url = upload_video(file, filename)
+            file_url = upload_video(file, file.name)
             video.file_url = file_url
+            video.title = file.name
 
         if commit:
             video.save()
@@ -26,5 +26,6 @@ class VideoAdminForm(forms.ModelForm):
 class VideoAdmin(admin.ModelAdmin):
     form = VideoAdminForm
     list_display = ("title", "file_url", "course", "time", "order")
+    readonly_fields = ("title", )
 
 admin.site.register(Video, VideoAdmin)
