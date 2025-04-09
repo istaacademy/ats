@@ -67,7 +67,7 @@ services:
       - 'minio_data:/data'
     environment:
       - MINIO_ROOT_USER=istaacademy
-      - MINIO_ROOT_PASSWORD=Kashani@1234
+      - MINIO_ROOT_PASSWORD=Kashani@1234!sta
       - MINIO_DEFAULT_BUCKETS=videos
     command: minio server /data
   celery:
