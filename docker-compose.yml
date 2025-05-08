@@ -92,6 +92,7 @@ services:
   frontend:
      build:
        context: ../front
+     image: front
      volumes:
        - react_build:/front/dist
 
