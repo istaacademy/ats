@@ -14,8 +14,6 @@ ENV APP_HOME=/usr/src/app
 RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/media
 
-COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
-
 COPY . /usr/src/app/
 
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT ["bash", "/usr/src/app/entrypoint.sh"]
