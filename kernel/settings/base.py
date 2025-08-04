@@ -1,3 +1,4 @@
+from distutils.command.config import config
 from pathlib import Path
 from decouple import config
 import os
@@ -129,8 +130,9 @@ JALALI_DATE_DEFAULTS = {
     },
 }
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://guest:guest@rabbitmq:5672/")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
+
+CELERY_BROKER_URL = config("CELERY_BROKER")
+CELERY_RESULT_BACKEND = config("CELERY_BACKEND")
 
 CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
                         "http://localhost:3003", "http://localhost:8000", ]

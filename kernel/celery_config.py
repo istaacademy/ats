@@ -15,6 +15,7 @@ app.autodiscover_tasks()
 
 app.conf.task_queues = [
     Queue('video', Exchange('video'), routing_key='video'),
+    Queue('sms', Exchange('sms'), routing_key='sms'),
 ]
 
 app.conf.task_acks_late = True

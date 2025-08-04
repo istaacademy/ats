@@ -8,6 +8,7 @@ from user.api.serializers import (
     VerificationCodeSerializer ,
     ProfileSerializer
 )
+from user.tasks import send_sms
 from user.models import User
 from rest_framework.permissions import IsAuthenticated
 from user.models import Profile
@@ -45,6 +46,7 @@ class SingInView(APIView):
         request.session['phone_number'] = phone_number
         request.session.set_expiry(300)  # 5 minutes expiry
         # Send the code via SMS here
+        send_sms.delay(phone_number, verification_code)
 
         return Response({"message": "کد تأیید ارسال شد."})
 

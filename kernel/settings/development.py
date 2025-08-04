@@ -1,7 +1,7 @@
 from .base import *
 from .secure import *
 from .packages import *
-from decouple import config
+from decouple import config, Config
 from datetime import timedelta
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(',')])
@@ -15,6 +15,7 @@ DATABASES = {
 
 REDIS_HOST = config("REDIS_HOST")
 REDIS_PORT = config("REDIS_PORT", cast=int)
+
 VERSION = "V1"
 
 SECRET_KEY = config('SECRET_KEY')
@@ -30,6 +31,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',
+        'user': '30/day'
+    }
 }
 
 SPECTACULAR_SETTINGS = {
@@ -43,4 +48,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=config("REFRESH_TOKEN_LIFETIME", cast=int)),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
 
