@@ -1,17 +1,6 @@
 version: "3.8"
 
 services:
-
-  flower:
-    container_name: flower
-    image: mher/flower
-    ports:
-      - 5555:5555
-    environment:
-      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
-    networks:
-      - main
-
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
