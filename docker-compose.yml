@@ -63,7 +63,7 @@ services:
   celery:
     container_name: celery
     build: .
-    command: celery -A kernel worker -l INFO -Q video  -E
+    command: celery -A kernel worker -l INFO
     volumes:
       - .:/usr/src/app/
       - /etc/letsencrypt:/etc/letsencrypt/:ro
