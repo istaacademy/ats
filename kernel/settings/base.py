@@ -134,8 +134,12 @@ JALALI_DATE_DEFAULTS = {
 CELERY_BROKER_URL = config("CELERY_BROKER")
 CELERY_RESULT_BACKEND = config("CELERY_BACKEND")
 
-CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
-                        "http://localhost:3003", "http://localhost:8000", ]
+CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com",
+                        "https://istaacademy.com"
+                        "https://localhost:3003",
+                        "http://localhost:3003",
+                        "http://localhost:8000",
+                        ]
 
 CORS_ALLOW_HEADERS = [
     'accept',
@@ -149,6 +153,9 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://www.istaacademy.com", "http://www.istaacademy.com", "https://localhost:3003",
-                        "http://localhost:3003", "http://localhost:8000", ]
+CSRF_TRUSTED_ORIGINS = ["https://www.istaacademy.com",
+                        "https://istaacademy.com",
+                        "https://localhost:3003",
+                        "http://localhost:3003",
+                        "http://localhost:8000", ]
 
