@@ -53,7 +53,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_DEFAULT_BUCKETS=videos
-      - MINIO_SERVER_URL=https://www.istaacademy.com/s3  # Changed to include /s3 path
+      - MINIO_SERVER_URL=https://media.istaacademy.com  # Changed to include /s3 path
       - MINIO_BROWSER_REDIRECT_URL=https://www.istaacademy.com/minio
       - MINIO_BROWSER=on  # Explicitly enable console
     command: minio server /data --console-address ":9001" --address ":9000"
