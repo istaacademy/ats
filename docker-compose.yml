@@ -50,8 +50,8 @@ services:
     env_file:
       - ./.env
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_STORAGE_ACCESS_KEY=${MINIO_STORAGE_ACCESS_KEY}
+      - MINIO_STORAGE_SECRET_KEY=${MINIO_STORAGE_SECRET_KEY}
       - MINIO_DEFAULT_BUCKETS=videos
       - MINIO_SERVER_URL=https://media.istaacademy.com  # Changed to include /s3 path
       - MINIO_BROWSER_REDIRECT_URL=https://www.istaacademy.com/minio
