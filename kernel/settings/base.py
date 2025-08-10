@@ -135,7 +135,7 @@ CELERY_BROKER_URL = config("CELERY_BROKER")
 CELERY_RESULT_BACKEND = config("CELERY_BACKEND")
 
 CORS_ALLOWED_ORIGINS = ["https://www.istaacademy.com",
-                        "https://istaacademy.com"
+                        "https://istaacademy.com",
                         "https://localhost:3003",
                         "http://localhost:3003",
                         "http://localhost:8000",
