@@ -8,7 +8,7 @@ class VideoAdminForm(forms.ModelForm):
 
     class Meta:
         model = Video
-        fields = ["title", "file", "course", "time", "order"]
+        fields = ["title", "file", "course", "duration", "order"]
 
     def save(self, commit=True):
         file = self.cleaned_data.pop("file", None)
@@ -25,7 +25,7 @@ class VideoAdminForm(forms.ModelForm):
 
 class VideoAdmin(admin.ModelAdmin):
     form = VideoAdminForm
-    list_display = ("title", "file_url", "course", "time", "order")
+    list_display = ("title", "file_url", "course", "duration", "order")
     readonly_fields = ("title", )
 
 admin.site.register(Video, VideoAdmin)
