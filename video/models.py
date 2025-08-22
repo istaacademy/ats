@@ -3,7 +3,7 @@ from course.models import Course
 
 class Video(models.Model):
     title = models.CharField(max_length=50, blank=True, null=True)
-    time = models.TimeField()
+    duration = models.DurationField(help_text="Video duration in HH:MM:SS format", blank=True, null=True)
     file_url = models.URLField(blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -11,9 +11,10 @@ class Video(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.title} ({self.time} MB)"
+        return f"{self.title} ({self.created_at.strftime('%Y-%m-%d %H:%M')})"
+
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ['-created_at', "order"]
         verbose_name = "ویدیو"
         verbose_name_plural = "ویدیوها"
